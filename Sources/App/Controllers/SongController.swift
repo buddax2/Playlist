@@ -10,8 +10,16 @@ import Vapor
 
 final class SongController {
     
-    func index(_ req: Request) throws -> Future<[Song]> {
+    func showAll(_ req: Request) throws -> Future<[Song]> {
         return Song.query(on: req).all()
+    }
+
+    func showBanned(_ req: Request) throws -> Future<[Song]> {
+        return Song.query(on: req).filter(\Song.isBanned == true).all()
+    }
+
+    func showNotBanned(_ req: Request) throws -> Future<[Song]> {
+        return Song.query(on: req).filter(\Song.isBanned == false).all()
     }
 
     func create(_ req: Request) throws -> Future<Song> {
@@ -20,8 +28,19 @@ final class SongController {
         }
     }
     
+    func ban(req: Request, songID: Int) -> Future<Song> {
+        return Song.find(songID, on: req).flatMap { (song) -> EventLoopFuture<Song> in
+            guard let song = song else {
+                throw Abort(.badRequest, reason: "Song not found")
+            }
+            
+            song.isBanned.toggle()
+            return song.save(on: req)
+        }
+    }
+    
     func save(songs: [Song]) {
-        let config = PostgreSQLDatabaseConfig(hostname: "localhost", port: 5431, username: "bx2", database: "playlist", password: nil, transport: .cleartext)
+        let config = DBConfig.dbConfig()
         let database = PostgreSQLDatabase(config: config)
         let worker = MultiThreadedEventLoopGroup(numberOfThreads: 2)
         let conn = database.newConnection(on: worker)

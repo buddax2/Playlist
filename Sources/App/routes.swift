@@ -14,21 +14,11 @@ public func routes(_ router: Router) throws {
         return "Hello, world!"
     }
 
-    router.get("songs") { req -> Future<View> in
+    router.get("all") { req -> Future<View> in
 
-        struct SSong: Codable {
-            let id: String
-            let title: String
-            let youtubeURL: String
-            let musicURL: String
-        }
-        
-        let songs = Song.query(on: req).all().map({ (songs) -> [SSong] in
+        let songs = try songController.showAll(req).map({ (songs) -> [SimpleSong] in
             return songs.map({ song in
-                let title = song.rawTitle.trimmingCharacters(in: .whitespacesAndNewlines).htmlEscaped()
-                let yURL = "https://www.youtube.com/results?search_query=\(title)"
-                let mURL = "https://music.youtube.com/search?q=\(title)"
-                return SSong(id: song.songID, title: song.rawTitle, youtubeURL: yURL, musicURL: mURL)
+                return song.simpleModel()
             })
         })
 
@@ -37,6 +27,37 @@ public func routes(_ router: Router) throws {
         }
     }
 
+    router.get("banned") { req -> Future<View> in
+
+        let songs = try songController.showBanned(req).map({ (songs) -> [SimpleSong] in
+            return songs.map({ song in
+                return song.simpleModel()
+            })
+        })
+
+        return songs.flatMap { (songs) -> EventLoopFuture<View> in
+            return try req.view().render("hello", ["songs": songs])
+        }
+    }
+
+    router.get("playlist") { req -> Future<View> in
+
+        let songs = try songController.showNotBanned(req).map({ (songs) -> [SimpleSong] in
+            return songs.map({ song in
+                return song.simpleModel()
+            })
+        })
+
+        return songs.flatMap { (songs) -> EventLoopFuture<View> in
+            return try req.view().render("hello", ["songs": songs])
+        }
+    }
+
+    router.get("ban", Int.parameter) { req -> Future<Song> in
+        let id = try req.parameters.next(Int.self)
+        return songController.ban(req: req, songID: id)
+    }
+    
     router.post("songs", use: songController.create)
 }
 

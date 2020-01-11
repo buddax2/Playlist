@@ -5,6 +5,11 @@
 	<link rel="stylesheet" href="/styles/app.css">
 </head>
 <body>
+    <ul>
+        <li><a href="./playlist">Плейлист</a></li>
+        <li><a href="./banned">Забанені</a></li>
+        <li><a href="./all">Всі пісні</a></li>
+    </ul>
     #get(body)
 </body>
 </html>

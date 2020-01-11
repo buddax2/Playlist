@@ -2,6 +2,14 @@ import Leaf
 import FluentPostgreSQL
 import Vapor
 
+class DBConfig {
+    
+    static func dbConfig() -> PostgreSQLDatabaseConfig {
+        return PostgreSQLDatabaseConfig(hostname: "localhost", port: 5431, username: "bx2", database: "playlist", password: nil, transport: .cleartext)
+    }
+    
+}
+
 /// Called before your application initializes.
 public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
     // Register providers first
@@ -20,7 +28,7 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
     services.register(middlewares)
 
-    let config = PostgreSQLDatabaseConfig(hostname: "localhost", port: 5431, username: "bx2", database: "playlist", password: nil, transport: .cleartext)
+    let config = DBConfig.dbConfig()
     let postgres = PostgreSQLDatabase(config: config)
 
     var databases = DatabasesConfig()

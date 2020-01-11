@@ -2,7 +2,7 @@
 
 #set("body") {
     #for(song in songs) {
-        </br><a target=\"_blank\" href=#(song.youtubeURL)><img src="/images/favicon-youtube.ico"></a> | <a target=\"_blank\" href=#(song.musicURL)><img width"16px" height="16px" src="/images/favicon-music.ico"></a> #(song.title)
+        </br><a target=\"_blank\" href=#(song.youtubeURL)><img src="/images/favicon-youtube.ico"></a> | <a target=\"_blank\" href=#(song.musicURL)><img width"16px" height="16px" src="/images/favicon-music.ico"></a> #(song.title) <a href="./ban/#(song.id)" target=\"_blank\"><small>видалити</small></a>
     }
 }
 

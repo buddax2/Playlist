@@ -22,6 +22,21 @@ final class Song: PostgreSQLModel {
         self.rawTitle = rawTitle
         self.isBanned = isBanned
     }
+    
+    func simpleModel() -> SimpleSong {
+        let title = self.rawTitle.trimmingCharacters(in: .whitespacesAndNewlines).htmlEscaped()
+        let yURL = "https://www.youtube.com/results?search_query=\(title)"
+        let mURL = "https://music.youtube.com/search?q=\(title)"
+        return SimpleSong(id: self.id, songID: self.songID, title: self.rawTitle, youtubeURL: yURL, musicURL: mURL)
+    }
+}
+
+struct SimpleSong: Codable {
+    let id: Int?
+    let songID: String
+    let title: String
+    let youtubeURL: String
+    let musicURL: String
 }
 
 /// Allows `Song` to be used as a dynamic migration.
