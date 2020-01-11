@@ -5,7 +5,7 @@ import Vapor
 class DBConfig {
     
     static func dbConfig() -> PostgreSQLDatabaseConfig {
-        return PostgreSQLDatabaseConfig(hostname: "localhost", port: 5432, username: "bx2", database: "bx2", password: nil, transport: .cleartext)
+        return PostgreSQLDatabaseConfig(hostname: "localhost", port: 5432, username: "bx2", database: "bx2", password: "password", transport: .cleartext)
     }
     
 }
