@@ -30,7 +30,7 @@ public func boot(_ app: Application) throws {
     let songController = SongController()
     
     func runRepeatTimer() {
-        app.eventLoop.scheduleTask(in: TimeAmount.seconds(60), runRepeatTimer)
+        app.eventLoop.scheduleTask(in: TimeAmount.seconds(180), runRepeatTimer)
         getCurrentPlaylist(on: app, songController: songController)
     }
     runRepeatTimer()
