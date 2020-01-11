@@ -5,8 +5,8 @@ public func routes(_ router: Router) throws {
     let songController = SongController()
 
     // Basic "It works" example
-    router.get { req -> String in
-        return "It works!"
+    router.get { req -> Future<View> in
+        return try req.view().render("base")
     }
     
     // Basic "Hello, world!" example
@@ -23,7 +23,7 @@ public func routes(_ router: Router) throws {
         })
 
         return songs.flatMap { (songs) -> EventLoopFuture<View> in
-            return try req.view().render("hello", ["songs": songs])
+            return try req.view().render("welcome", ["songs": songs])
         }
     }
 
@@ -36,7 +36,7 @@ public func routes(_ router: Router) throws {
         })
 
         return songs.flatMap { (songs) -> EventLoopFuture<View> in
-            return try req.view().render("hello", ["songs": songs])
+            return try req.view().render("welcome", ["songs": songs])
         }
     }
 
@@ -49,7 +49,7 @@ public func routes(_ router: Router) throws {
         })
 
         return songs.flatMap { (songs) -> EventLoopFuture<View> in
-            return try req.view().render("hello", ["songs": songs])
+            return try req.view().render("welcome", ["songs": songs])
         }
     }
 

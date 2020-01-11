@@ -6,10 +6,13 @@
 </head>
 <body>
     <ul>
-        <li><a href="./playlist">Плейлист</a></li>
-        <li><a href="./banned">Забанені</a></li>
-        <li><a href="./all">Всі пісні</a></li>
+        <li><a href="./playlist" target="playlist">Плейлист</a></li>
+        <li><a href="./banned" target="playlist">Забанені</a></li>
+        <li><a href="./all" target="playlist">Всі пісні</a></li>
     </ul>
+    <iframe name="player" width="560" height="315" src="http://www.youtube.com/embed?listType=search&list=These+Days+-+Rudimental%2FJess+Glynne%2FMacklemore%2FDan+Caplen" frameborder="0" allowfullscreen></iframe>
+
+    <iframe name="playlist" width="100%", height="400" scr="playlist"></iframe>
     #get(body)
 </body>
 </html>

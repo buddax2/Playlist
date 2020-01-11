@@ -1,7 +1,8 @@
-#set("title") { It works }
-
 #set("body") {
-	<div class="welcome">
-		No Songs
-	</div>
+    #for(song in songs) {
+        <a target="player" href=#(song.youtubeURL)><img src="/images/favicon-youtube.ico"></a> | <a target=\"_blank\" href=#(song.musicURL)><img width"16px" height="16px" src="/images/favicon-music.ico"></a> #(song.title) <a href="javascript:ban('ban/#(song.id)')"><small>видалити</small></a>
+        </br>
+    }
 }
+
+#embed("playlist")

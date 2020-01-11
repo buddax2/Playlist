@@ -1,0 +1,19 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/styles/app.css">
+</head>
+<body>
+    <script>
+        function ban(link) {
+            window.frames.banFrame.onload = setTimeout(function(){
+                   window.location.reload(1);
+                }, 100);
+            window.frames.banFrame.location = link;
+        }
+    </script>
+    
+    #get(body)
+    
+    <iframe id="banFrame" name="banFrame" width="0" height="0" scr=""></iframe>
+</body>
+</html>

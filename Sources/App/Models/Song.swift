@@ -25,7 +25,8 @@ final class Song: PostgreSQLModel {
     
     func simpleModel() -> SimpleSong {
         let title = self.rawTitle.trimmingCharacters(in: .whitespacesAndNewlines).htmlEscaped()
-        let yURL = "https://www.youtube.com/results?search_query=\(title)"
+//        let yURL = "https://www.youtube.com/results?search_query=\(title)"
+        let yURL = "http://www.youtube.com/embed?listType=search&list=\(title)"
         let mURL = "https://music.youtube.com/search?q=\(title)"
         return SimpleSong(id: self.id, songID: self.songID, title: self.rawTitle, youtubeURL: yURL, musicURL: mURL)
     }
