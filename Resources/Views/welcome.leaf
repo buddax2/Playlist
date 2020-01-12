@@ -1,6 +1,6 @@
 #set("body") {
     #for(song in songs) {
-        <a target="player" href=#(song.youtubeURL)><img src="/images/favicon-youtube.ico"></a> | <a target="_blank" href=#(song.musicURL)><img width"16px" height="16px" src="/images/favicon-music.ico"></a> #(song.title) <a href="./ban/#(song.id)/#(currentPage)"><small>видалити</small></a>
+        <a target="player" href=#(song.youtubeURL)><img src="/images/favicon-youtube.ico"></a> | <a target="player" href=#(song.musicURL)><img width"16px" height="16px" src="/images/favicon-music.ico"></a> #(song.title) <a href="./ban/#(song.id)/#(currentPage)"><small>видалити</small></a>
         </br>
     }
 }
