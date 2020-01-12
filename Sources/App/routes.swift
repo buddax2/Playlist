@@ -4,6 +4,11 @@ import Vapor
 public func routes(_ router: Router) throws {
     let songController = SongController()
 
+    struct ViewData: Content {
+        let songs: [SimpleSong]
+        let currentPage: String
+    }
+
     // Basic "It works" example
     router.get { req -> Future<View> in
         return try req.view().render("base")
@@ -23,7 +28,8 @@ public func routes(_ router: Router) throws {
         })
 
         return songs.flatMap { (songs) -> EventLoopFuture<View> in
-            return try req.view().render("welcome", ["songs": songs])
+            let data = ViewData(songs: songs, currentPage: "all")
+            return try req.view().render("welcome", data)
         }
     }
 
@@ -36,7 +42,8 @@ public func routes(_ router: Router) throws {
         })
 
         return songs.flatMap { (songs) -> EventLoopFuture<View> in
-            return try req.view().render("welcome", ["songs": songs])
+            let data = ViewData(songs: songs, currentPage: "banned")
+            return try req.view().render("welcome", data)
         }
     }
 
@@ -49,13 +56,18 @@ public func routes(_ router: Router) throws {
         })
 
         return songs.flatMap { (songs) -> EventLoopFuture<View> in
-            return try req.view().render("welcome", ["songs": songs])
+            let data = ViewData(songs: songs, currentPage: "playlist")
+            return try req.view().render("welcome", data)
         }
     }
 
-    router.get("ban", Int.parameter) { req -> Future<Song> in
+    router.get("ban", Int.parameter, String.parameter) { req -> Future<Response> in
         let id = try req.parameters.next(Int.self)
-        return songController.ban(req: req, songID: id)
+        let page = try req.parameters.next(String.self)
+        let redirectTo = "/\(page)"
+        return songController.ban(req: req, songID: id).map { _ in
+            return req.redirect(to: redirectTo)
+        }
     }
     
     router.post("songs", use: songController.create)
