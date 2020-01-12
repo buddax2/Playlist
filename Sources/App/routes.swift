@@ -70,6 +70,20 @@ public func routes(_ router: Router) throws {
         }
     }
     
+    router.get("random") { req -> Future<[Song]> in
+        return try songController.showNotBanned(req).map { (songs) -> [Song] in
+            let resultSongsCount = 5
+            var resultSongs = [Song]()
+            
+            while resultSongs.count < resultSongsCount {
+                let randomIndex = Int.random(in: Range(uncheckedBounds: (0, songs.count)))
+                resultSongs.append(songs[randomIndex])
+            }
+            
+            return resultSongs
+        }
+    }
+    
     router.post("songs", use: songController.create)
 }
 
